@@ -94,7 +94,11 @@ def build_auth_configuration() -> AuthConfiguration:
         token,
         client_id=client_id,
         scopes=scopes or ["mcp:invoke"],
-        resource=settings.resource_server_url,
+        resource=(
+            str(settings.resource_server_url)
+            if settings.resource_server_url is not None
+            else None
+        ),
     )
 
     return AuthConfiguration(settings=settings, verifier=verifier)
