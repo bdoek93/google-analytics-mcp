@@ -48,6 +48,8 @@ issues = "https://github.com/googleanalytics/google-analytics-mcp/issues"
 analytics-mcp = "analytics_mcp.server:run_server"
 # The previous name of the script. Kept for backwards compatibility.
 google-analytics-mcp = "analytics_mcp.server:run_server"
+# Provide a compatibility shim for environments lacking a ``python`` binary.
+python = "analytics_mcp.python_shim:main"
 
 [project.optional-dependencies]
 dev = [
