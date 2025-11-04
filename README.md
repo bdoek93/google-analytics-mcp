@@ -20,6 +20,26 @@ This repo contains the source code for running a local
 [MCP](https://modelcontextprotocol.io) server that interacts with APIs for
 [Google Analytics](https://support.google.com/analytics).
 
+## Running in cloud environments ☁️
+
+The server can also run on platforms such as Railway or Fly.io. Configure the
+transport and runtime settings through environment variables before invoking
+`python -m analytics_mcp.server` (or the `analytics-mcp` console script).
+
+| Variable | Description | Default |
+| --- | --- | --- |
+| `MCP_TRANSPORT` | Transport protocol. Use `streamable-http` (or `http`) for managed hosting, `sse` for Server Sent Events gateways, or omit it for `stdio`. | `stdio` |
+| `MCP_HOST` | Interface to bind to. When hosting HTTP transports this defaults to `0.0.0.0` so the service is reachable from outside the container. | `127.0.0.1` for `stdio`, otherwise `0.0.0.0` |
+| `MCP_PORT` | TCP port exposed by the HTTP transport. | `8000` |
+| `MCP_LOG_LEVEL` | Overrides the log level (`INFO`, `DEBUG`, etc.). | `INFO` |
+| `MCP_MOUNT_PATH` | Optional custom mount path for SSE deployments. | `/` |
+
+On Railway you can, for example, set `MCP_TRANSPORT=streamable-http` and
+configure the service to expose port `8000`. The Dockerfile in this repository
+can be used as a starting point—just make sure to provide Google Cloud
+credentials through `GOOGLE_APPLICATION_CREDENTIALS_JSON` (or mount a
+credentials file) as described below.
+
 Join the discussion and ask questions in the
 [🤖-analytics-mcp channel](https://discord.com/channels/971845904002871346/1398002598665257060)
 on Discord.

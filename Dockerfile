@@ -21,8 +21,10 @@ RUN pip install --no-cache-dir .
 RUN rm -rf /root/.cache/pip
 
 # 7. Exposeer poort indien jouw server een HTTP-endpoint heeft
-# EXPOSE 8000
+EXPOSE 8000
 
 # 8. Definieer de entrypoint/start command
 #    Schrijf de credentials naar bestand en stel GOOGLE_APPLICATION_CREDENTIALS in
-CMD ["bash", "-lc", "echo \"$GOOGLE_APPLICATION_CREDENTIALS_JSON\" > /app/credentials.json && export GOOGLE_APPLICATION_CREDENTIALS=/app/credentials.json && python -m analytics_mcp.server"]
+#    Standaard gebruiken we streamable HTTP zodat platforms als Railway de MCP server
+#    via een openbaar endpoint kunnen bereiken.
+CMD ["bash", "-lc", "echo \"$GOOGLE_APPLICATION_CREDENTIALS_JSON\" > /app/credentials.json && export GOOGLE_APPLICATION_CREDENTIALS=/app/credentials.json && export MCP_TRANSPORT=streamable-http && python -m analytics_mcp.server"]
