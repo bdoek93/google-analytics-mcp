@@ -1,8 +1,10 @@
 For cloud/container deployment, use:
 
-    python -m analytics_mcp
+    python3 -m analytics_mcp
 
-or ensure the console script `analytics-mcp` is available in PATH.
+or ensure the console script `analytics-mcp` is available in PATH. Some
+container images do not provide a `python` shim by default, so explicitly
+invoking `python3` avoids "command not found" errors.
 
 # Google Analytics MCP Server (Experimental)
 
