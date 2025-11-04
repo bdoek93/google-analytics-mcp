@@ -26,6 +26,37 @@ The server can also run on platforms such as Railway or Fly.io. Configure the
 transport and runtime settings through environment variables before invoking
 `python -m analytics_mcp.server` (or the `analytics-mcp` console script).
 
+### Configure bearer-token authentication 🔐
+
+The server now enforces bearer-token authentication for all HTTP transports.
+Set the following environment variables wherever the MCP server runs:
+
+| Variable | Description | Default |
+| --- | --- | --- |
+| `MCP_TOKEN` | **Required.** Shared secret that clients must present in the `Authorization: Bearer` header. | _None_ (server exits if unset) |
+| `MCP_CLIENT_ID` | Optional label associated with accepted requests. | `google-analytics-mcp` |
+| `MCP_REQUIRED_SCOPES` | Comma-separated scopes to embed in the access token (influences authorization decisions and `WWW-Authenticate` headers). | `mcp:invoke` |
+| `MCP_AUTH_ISSUER_URL` | URL advertised as the token issuer in `WWW-Authenticate` headers. | `https://mcp.local/issuer` |
+| `MCP_RESOURCE_SERVER_URL` | Base URL of your deployed server. Set this when hosting behind a public domain so clients can discover metadata. | Derived from `MCP_HOST`, `MCP_PORT`, and `/mcp` when omitted |
+
+> [!TIP]
+> When deploying on platforms such as Railway or Fly.io, store `MCP_TOKEN` and
+> related values as secrets/environment variables in the provider's dashboard.
+
+#### Using the token from Make.com
+
+When configuring a custom HTTP module in [Make.com](https://www.make.com/):
+
+1. Set the request URL to your server's `/mcp` endpoint (for example,
+   `https://your-domain.example/mcp`).
+1. Add a custom HTTP header named `Authorization` with the value
+   `Bearer YOUR_MCP_TOKEN`.
+1. Trigger the request; the server accepts it only when the provided token
+   matches the `MCP_TOKEN` environment variable.
+
+Clients that cannot set custom headers are not compatible with the server, as
+authentication is mandatory.
+
 | Variable | Description | Default |
 | --- | --- | --- |
 | `MCP_TRANSPORT` | Transport protocol. Use `streamable-http` (or `http`) for managed hosting, `sse` for Server Sent Events gateways, or omit it for `stdio`. | `stdio` |

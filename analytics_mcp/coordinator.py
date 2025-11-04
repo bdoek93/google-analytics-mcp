@@ -18,7 +18,14 @@ The singleton allows other modules to register their tools with the same MCP
 server using `@mcp.tool` annotations, thereby 'coordinating' the bootstrapping
 of the server.
 """
+from analytics_mcp.auth import build_auth_configuration
 from mcp.server.fastmcp import FastMCP
 
-# Creates the singleton.
-mcp = FastMCP("Google Analytics Server")
+_auth_configuration = build_auth_configuration()
+
+# Creates the singleton with mandatory bearer-token authentication.
+mcp = FastMCP(
+    "Google Analytics Server",
+    auth=_auth_configuration.settings,
+    token_verifier=_auth_configuration.verifier,
+)
