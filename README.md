@@ -1,3 +1,9 @@
+For cloud/container deployment, use:
+
+    python -m analytics_mcp
+
+or ensure the console script `analytics-mcp` is available in PATH.
+
 # Google Analytics MCP Server (Experimental)
 
 [![PyPI version](https://img.shields.io/pypi/v/analytics-mcp.svg)](https://pypi.org/project/analytics-mcp/)
